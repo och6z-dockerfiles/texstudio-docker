@@ -8,18 +8,20 @@ RUN apt-get update \
     texlive \
     texlive-base \
     texlive-binaries \
+    texlive-fonts-recommended \
+    texlive-generic-recommended \
+    texlive-lang-english \
+    texlive-lang-european \
+    texlive-lang-german \
     texlive-latex-base \
+    texlive-latex-extra \
     texlive-latex-extra \
     texlive-latex-recommended \
     texlive-pictures \
-    texlive-fonts-recommended \
-    texlive-generic-recommended \
-    texlive-latex-extra \
-    hunspell-hu \
-    hunspell-en-us \
-    hunspell-de-de \
     && apt-get purge -y && apt-get autoremove -y && apt-get autoclean -y \
     && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /texstudio
 
 ENV MESA_LOADER_DRIVER_OVERRIDE i965
 ENV XDG_RUNTIME_DIR /tmp/runtime-root
@@ -29,5 +31,6 @@ ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["texstudio"]
 
 #docker build --no-cache --build-arg IMAGE_VERSION=unstable-slim --file Dockerfile.debian --tag image-name:version .
+#docker volume create --driver local --name volume-name
 #xhost +local:docker
-#docker run --interactive --tty --volume /tmp/.X11-unix:/tmp/.X11-unix --env DISPLAY=unix$DISPLAY --name container-name image-name:version
+#docker run --interactive --tty --volume /tmp/.X11-unix:/tmp/.X11-unix --mount source=volume-name,target=/texstudio --env DISPLAY=unix$DISPLAY --name container-name image-name:version
